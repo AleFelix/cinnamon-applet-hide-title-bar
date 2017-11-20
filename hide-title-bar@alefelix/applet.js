@@ -41,6 +41,7 @@ TitleBarHider.prototype = {
                 let [x, y] = gdk_win.get_position();
                 gdk_win.move(0,0);
                 gdk_win.resize(gdk_win.get_width() + x, gdk_win.get_height() + y);
+                gdk_win.unref();
             }
         }
     }
