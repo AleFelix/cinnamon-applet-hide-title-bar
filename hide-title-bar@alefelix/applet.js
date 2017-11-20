@@ -1,5 +1,6 @@
 const Applet = imports.ui.applet;
-const Gdk = imports.gi.Gdk
+const Gdk = imports.gi.Gdk;
+const Main = imports.ui.main;
 
 function TitleBarHider(orientation, panel_height, instance_id) {
     this._init(orientation, panel_height, instance_id);
@@ -14,6 +15,25 @@ function containsObject(list, obj) {
     return [false, -1];
 }
 
+function restoreAllTitleBars() {
+    for (let gdk_win of global.windows_with_hidden_title_bars) {
+        try {
+            gdk_win.set_decorations(Gdk.WMDecoration.ALL);
+        } catch(error) {
+            global.log("Can't restore the titlebar of the window, skipping");
+        }
+        global.windows_with_hidden_title_bars.shift();
+    }
+}
+
+function edit_cinnamon_shutdown_sequence() {
+    var old_shutdown_sequence = Main.do_shutdown_sequence;
+    Main.do_shutdown_sequence = function() {
+        restoreAllTitleBars();
+        old_shutdown_sequence();
+    }
+}
+
 TitleBarHider.prototype = {
     __proto__: Applet.IconApplet.prototype,
 
@@ -23,6 +43,7 @@ TitleBarHider.prototype = {
         this.set_applet_icon_name("view-restore");
         this.set_applet_tooltip(_("Click here to hide/unhide the title bar of the active window"));
         global.windows_with_hidden_title_bars = [];
+        edit_cinnamon_shutdown_sequence();
     },
 
     on_applet_clicked: function() {
@@ -33,7 +54,7 @@ TitleBarHider.prototype = {
             let [is_hidden, index] = containsObject(global.windows_with_hidden_title_bars, gdk_win);
             if (is_hidden) {
                 gdk_win.set_decorations(Gdk.WMDecoration.ALL);
-                global.windows_with_hidden_title_bars.splice(index, 1)
+                global.windows_with_hidden_title_bars.splice(index, 1);
                 gdk_win.unref();
             } else {
                 global.windows_with_hidden_title_bars.push(gdk_win);
@@ -44,6 +65,10 @@ TitleBarHider.prototype = {
                 gdk_win.unref();
             }
         }
+    },
+
+    on_applet_removed_from_panel: function() {
+        restoreAllTitleBars();
     }
 };
 
