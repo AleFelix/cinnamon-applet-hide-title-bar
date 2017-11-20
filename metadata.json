@@ -1,0 +1,8 @@
+{
+    "description": "Click on the applet to hide or unhide the title bar of the active window.", 
+    "max-instances": "-1", 
+    "dangerous": true, 
+    "uuid": "hide-title-bar@alefelix", 
+    "name": "Hide Title Bar", 
+    "icon": "view-restore"
+}
