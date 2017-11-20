@@ -8,10 +8,10 @@ function TitleBarHider(orientation, panel_height, instance_id) {
 function containsObject(list, obj) {
     for (var i = 0; i < list.length; i++) {
         if (list[i] === obj) {
-            return true;
+            return [true, i];
         }
     }
-    return false;
+    return [false, -1];
 }
 
 TitleBarHider.prototype = {
@@ -30,9 +30,10 @@ TitleBarHider.prototype = {
         let screen = Gdk.Screen.get_default();
         let gdk_win = screen.get_active_window();
         if (gdk_win) {
-            let is_hidden = containsObject(global.windows_with_hidden_title_bars, gdk_win);
+            let [is_hidden, index] = containsObject(global.windows_with_hidden_title_bars, gdk_win);
             if (is_hidden) {
                 gdk_win.set_decorations(Gdk.WMDecoration.ALL);
+                global.windows_with_hidden_title_bars.splice(index, 1)
                 gdk_win.unref();
             } else {
                 global.windows_with_hidden_title_bars.push(gdk_win);
