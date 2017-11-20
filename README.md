@@ -18,4 +18,4 @@ Installation:
  - Cinnamon sometimes crash and needs to be restarted
  
  Credits:
- - @lestcape for the decorate and undecorate methods from this comment: https://github.com/linuxmint/muffin/issues/183#issuecomment-99124695
+ - [@lestcape](https://github.com/lestcape) for the decorate and undecorate methods from this comment: https://github.com/linuxmint/muffin/issues/183#issuecomment-99124695
