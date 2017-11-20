@@ -13,7 +13,7 @@ Installation:
  - The applet can hide the title bar of multiple windows simultaneously
  
  Bugs:
- - Sometimes it's necessary to click the applet button twice to hide the title bar
+ - ~~Sometimes it's necessary to click the applet button twice to hide the title bar~~
  - Windows can't be moved until the title bar is restored
  - Cinnamon sometimes crash and needs to be restarted
  
